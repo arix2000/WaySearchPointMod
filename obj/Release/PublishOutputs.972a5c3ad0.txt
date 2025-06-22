@@ -1,6 +1,0 @@
-/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/publish/assets/game/lang/en.json
-/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/publish/assets/game/lang/pl.json
-/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/publish/modinfo.json
-/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/publish/WaySearchPoint.dll
-/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/publish/WaySearchPoint.deps.json
-/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/publish/WaySearchPoint.pdb
