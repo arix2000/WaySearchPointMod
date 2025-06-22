@@ -1,0 +1,11 @@
+{
+    "type": "code",
+    "modid": "waysearchpoint",
+    "name": "WaySearchPoint",
+    "authors": [
+        "arix20003"
+    ],
+    "description": "This mod allows you to search your waypoints and displays your distance from them",
+    "version": "1.0.0",
+    "dependencies": {}
+}

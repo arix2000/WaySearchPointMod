@@ -1,0 +1,15 @@
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/assets/game/lang/en.json
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/assets/game/lang/pl.json
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/modinfo.json
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/WaySearchPoint.deps.json
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/WaySearchPoint.dll
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/bin/Release/Mods/mod/WaySearchPoint.pdb
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.csproj.AssemblyReference.cache
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.GeneratedMSBuildEditorConfig.editorconfig
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.AssemblyInfoInputs.cache
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.AssemblyInfo.cs
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.csproj.CoreCompileInputs.cache
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.dll
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/refint/WaySearchPoint.dll
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/WaySearchPoint.pdb
+/home/arek/Programming/Modding/WaySearchPoint/WaySearchPoint/obj/Release/ref/WaySearchPoint.dll
