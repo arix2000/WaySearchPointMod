@@ -442,6 +442,9 @@ FodyWeavers.xsd
 *.iml
 *.ipr
 
+./obj
+./bin
+
 # CMake
 cmake-build-*/
 
