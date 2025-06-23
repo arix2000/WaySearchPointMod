@@ -50,7 +50,7 @@ internal class WaySearchPointLayer : MapLayer
     private void OnEveryTwoSeconds(float dt)
     {
         base.OnTick(dt);
-        var sharedWaypoints = WaySearchPointUtils.GetSharedWaypointsIfExists(_mapSink, api);
+        var sharedWaypoints = CompatibilityUtils.GetSharedWaypointsIfExists(_mapSink, api);
         var allWaypoints = _waypointLayer.ownWaypoints.Concat(sharedWaypoints).ToList();
         if (allWaypoints.Count != _dialog.WaypointsCount)
         {

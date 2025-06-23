@@ -63,6 +63,12 @@ public class GuiWaypointListItem : IFlatListItem
 
         var svgPath =
             new AssetLocation("game", $"textures/icons/worldmap/{iconCode}.svg");
+
+        if (!capi.Assets.Exists(svgPath))
+        {
+            svgPath = CompatibilityUtils.TryToGetFromMoreIconsMod(capi, iconCode);
+        }
+        
         _iconTexture?.Dispose();
         _iconTexture = capi.Assets.Exists(svgPath)
             ? capi.Gui.LoadSvgWithPadding(svgPath, 24, 24, color: Waypoint.Color)
