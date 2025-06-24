@@ -50,6 +50,7 @@ public class GuiWaypointListItem : IFlatListItem
             distance = double.Round(distance, 1);
             distanceUnit = "km";
         }
+
         return distance.ToString(CultureInfo.CurrentCulture) + " " + distanceUnit;
     }
 
@@ -63,6 +64,12 @@ public class GuiWaypointListItem : IFlatListItem
 
         var svgPath =
             new AssetLocation("game", $"textures/icons/worldmap/{iconCode}.svg");
+
+        if (!capi.Assets.Exists(svgPath))
+        {
+            svgPath = CompatibilityUtils.TryToGetFromOthersMods(capi, iconCode);
+        }
+
         _iconTexture?.Dispose();
         _iconTexture = capi.Assets.Exists(svgPath)
             ? capi.Gui.LoadSvgWithPadding(svgPath, 24, 24, color: Waypoint.Color)
@@ -104,6 +111,9 @@ public class GuiWaypointListItem : IFlatListItem
 
         capi.Render.PushScissor(scissor, true);
 
+        if (_texture == null)
+            _texture = new TextTextureUtil(capi).GenTextTexture(Waypoint.Title ?? Waypoint.Text,
+                CairoFont.WhiteSmallText());
         capi.Render.Render2DTexturePremultipliedAlpha(
             _texture.TextureId,
             (float)(x + 42), (float)(y + 2),
