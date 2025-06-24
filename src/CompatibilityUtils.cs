@@ -21,15 +21,12 @@ public static class CompatibilityUtils
     private static readonly AssetLocation Fallback =
         new("game", "textures/icons/notfound.png");
 
-    public static AssetLocation TryToGetFromMoreIconsMod(ICoreClientAPI capi, string iconCode)
+    public static AssetLocation TryToGetFromOthersMods(ICoreClientAPI capi, string iconCode)
     {
-        if (capi.ModLoader.GetMod("moreicons") == null)
-            return Fallback;
-
         if (IconIndex.Count == 0)
         {
             var assets = capi.Assets.GetMany(
-                "textures/icons/worldmap/", "moreicons");
+                "textures/icons/worldmap/");
 
             foreach (var asset in assets)
             {

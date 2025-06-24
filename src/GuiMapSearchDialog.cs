@@ -30,7 +30,7 @@ public class GuiMapSearchDialog : GuiDialog
     public GuiMapSearchDialog(ICoreAPI api, WorldMapManager mapSink) : base(api as ICoreClientAPI)
     {
         _capi = api as ICoreClientAPI;
-        _capi.Event.MouseMove += OnGlobalMouseMove;
+        if (_capi != null) _capi.Event.MouseMove += OnGlobalMouseMove;
         _worldMapManager = mapSink;
     }
 
@@ -119,7 +119,6 @@ public class GuiMapSearchDialog : GuiDialog
         if (!_isScrollEnabled) return;
         var scrollbar = SingleComposer.GetScrollbar("scrollbar");
         scrollbar.SetHeights((float)ListHeight, (float)list.insideBounds.fixedHeight);
-        capi.Logger.Notification("WaySearchPoint - Scrollbar has been updated");
     }
 
     private void ResetUpdateScrollbarToTop(bool shouldResetScroll)
@@ -146,7 +145,8 @@ public class GuiMapSearchDialog : GuiDialog
             return;
         }
 
-        var matches = WaySearchPointUtils.GetSortedMatches(_currentText, _waypoints, _selectedSortOption, playerPosition);
+        var matches =
+            WaySearchPointUtils.GetSortedMatches(_currentText, _waypoints, _selectedSortOption, playerPosition);
 
         var playerPos = capi.World.Player.Entity.Pos.XYZ;
         foreach (var waypoint in matches)
@@ -184,11 +184,11 @@ public class GuiMapSearchDialog : GuiDialog
 
     private void OnGlobalMouseMove(MouseEvent args)
     {
-        _outerBounds.CalcWorldBounds();
+        _outerBounds?.CalcWorldBounds();
         var mxGui = (int)GuiElement.scaled(args.X);
         var myGui = (int)GuiElement.scaled(args.Y);
 
-        var isNowInside = _outerBounds.PointInside(mxGui, myGui);
+        var isNowInside = _outerBounds?.PointInside(mxGui, myGui) ?? false;
         if (isNowInside == _mouseWasInside) return;
         _mouseWasInside = isNowInside;
         if (isNowInside)
