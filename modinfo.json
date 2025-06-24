@@ -2,6 +2,7 @@
     "type": "code",
     "modid": "waysearchpoint",
     "name": "WaySearchPoint",
+    "side": "Client",
     "authors": [
         "arix20003"
     ],
