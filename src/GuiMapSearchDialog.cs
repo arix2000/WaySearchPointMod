@@ -185,10 +185,7 @@ public class GuiMapSearchDialog : GuiDialog
     private void OnGlobalMouseMove(MouseEvent args)
     {
         _outerBounds?.CalcWorldBounds();
-        var mxGui = (int)GuiElement.scaled(args.X);
-        var myGui = (int)GuiElement.scaled(args.Y);
-
-        var isNowInside = _outerBounds?.PointInside(mxGui, myGui) ?? false;
+        var isNowInside = _outerBounds?.PointInside(args.X, args.Y) ?? false;
         if (isNowInside == _mouseWasInside) return;
         _mouseWasInside = isNowInside;
         if (isNowInside)
