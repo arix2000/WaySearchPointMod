@@ -38,9 +38,15 @@ public class GuiMapSearchDialog : GuiDialog
 
     public void Compose(string key, GuiDialogWorldMap guiDialogWorldMap, GuiComposer compo)
     {
-        _outerBounds = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.LeftBottom);
+        const int dialogHeight = 500;
+        const int dialogWidth = 300;
+        
+        _outerBounds = ElementStdBounds.AutosizedMainDialog.WithFixedPosition(
+                x: (compo.Bounds.renderX + compo.Bounds.OuterWidth) / RuntimeEnv.GUIScale + 10.0,
+                y: (compo.Bounds.renderY  + compo.Bounds.OuterHeight - (580 * RuntimeEnv.GUIScale)) / RuntimeEnv.GUIScale)
+            .WithAlignment(EnumDialogArea.None);
         var backgroundBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
-        var dialogContainerBounds = ElementBounds.Fixed(0, 40, 300, 500);
+        var dialogContainerBounds = ElementBounds.Fixed(0, 40, dialogWidth, dialogHeight);
         backgroundBounds.BothSizing = ElementSizing.FitToChildren;
         backgroundBounds.WithChildren(dialogContainerBounds);
         var inputBounds = ElementBounds.Fixed(GuiStyle.ElementToDialogPadding, 45.0, 300.0, 30.0);
@@ -70,7 +76,7 @@ public class GuiMapSearchDialog : GuiDialog
             .AddVerticalScrollbar(OnNewScrollbarValue, scrollbarBounds, "scrollbar")
             .EndChildElements()
             .Compose();
-
+        
         UpdateScrollbar();
         SingleComposer.GetTextInput("searchinput").SetPlaceHolderText(Lang.Get("Search..."));
         SingleComposer.UnfocusOwnElements();
@@ -185,10 +191,7 @@ public class GuiMapSearchDialog : GuiDialog
     private void OnGlobalMouseMove(MouseEvent args)
     {
         _outerBounds?.CalcWorldBounds();
-        var mxGui = (int)GuiElement.scaled(args.X);
-        var myGui = (int)GuiElement.scaled(args.Y);
-
-        var isNowInside = _outerBounds?.PointInside(mxGui, myGui) ?? false;
+        var isNowInside = _outerBounds?.PointInside(args.X, args.Y) ?? false;
         if (isNowInside == _mouseWasInside) return;
         _mouseWasInside = isNowInside;
         if (isNowInside)

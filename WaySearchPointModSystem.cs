@@ -11,6 +11,6 @@ public class WaySearchPointModSystem : ModSystem
     public override void StartClientSide(ICoreClientAPI api)
     {
         var mapManager = api.ModLoader.GetModSystem<WorldMapManager>();
-        mapManager.RegisterMapLayer<WaySearchPointLayer>(Name, 0.01);
+        mapManager.RegisterMapLayer<WaySearchPointLayer>(Name, 0.74);
     }
 }

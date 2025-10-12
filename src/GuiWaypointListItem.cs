@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
@@ -15,7 +16,6 @@ public class GuiWaypointListItem : IFlatListItem
     private LoadedTexture _iconTexture;
     private readonly Vec3d _playerPos;
     public Waypoint Waypoint { get; }
-    private ElementBounds _scissorBounds;
 
     private readonly List<string> _iconCodesToRename =
         new() { "circle", "turnip", "grain", "apple", "berries", "mushroom" };
@@ -36,8 +36,6 @@ public class GuiWaypointListItem : IFlatListItem
         var distanceText = GetDistanceText();
         _distanceTexture = new TextTextureUtil(capi).GenTextTexture(distanceText, CairoFont.WhiteDetailText());
         LoadIconTexture(capi);
-        _scissorBounds = ElementBounds.FixedSize(280.0, 20.0);
-        _scissorBounds.ParentBounds = capi.Gui.WindowBounds;
     }
 
     private string GetDistanceText()
@@ -56,7 +54,7 @@ public class GuiWaypointListItem : IFlatListItem
 
     private void LoadIconTexture(ICoreClientAPI capi)
     {
-        string iconCode = string.IsNullOrEmpty(Waypoint.Icon) ? "0-circle" : Waypoint.Icon;
+        var iconCode = string.IsNullOrEmpty(Waypoint.Icon) ? "0-circle" : Waypoint.Icon;
         if (_iconCodesToRename.Contains(iconCode))
         {
             iconCode = MapIconName(iconCode);
@@ -78,11 +76,11 @@ public class GuiWaypointListItem : IFlatListItem
 
     private string MapIconName(string word)
     {
-        int index = _iconCodesToRename.IndexOf(word);
+        var index = _iconCodesToRename.IndexOf(word);
         if (index == -1)
             return null;
 
-        string prefix = index == 0 ? "0" : index.ToString("D2");
+        var prefix = index == 0 ? "0" : index.ToString("D2");
         return $"{prefix}-{word}";
     }
 
@@ -92,39 +90,42 @@ public class GuiWaypointListItem : IFlatListItem
     {
         if (_texture == null || _iconTexture == null) Recompose(capi);
 
-        double distX = x + cellWidth - _distanceTexture.Width - 8; // 8-px padding
+        var distX = x + cellWidth - _distanceTexture.Width - 8;
         capi.Render.Render2DTexturePremultipliedAlpha(
             _distanceTexture.TextureId,
             (float)distX, (float)(y + 2),
             _distanceTexture.Width, _distanceTexture.Height);
 
-        double scissorX = x + 42;
-        double scissorW = distX - scissorX - 8;
-        var scissor = ElementBounds.Fixed(
-            scissorX,
-            y,
-            scissorW,
-            cellHeight
-        );
-        scissor.ParentBounds = capi.Gui.WindowBounds;
-        scissor.CalcWorldBounds();
-
-        capi.Render.PushScissor(scissor, true);
-
-        if (_texture == null)
-            _texture = new TextTextureUtil(capi).GenTextTexture(Waypoint.Title ?? Waypoint.Text,
-                CairoFont.WhiteSmallText());
-        capi.Render.Render2DTexturePremultipliedAlpha(
-            _texture.TextureId,
-            (float)(x + 42), (float)(y + 2),
-            _texture.Width, _texture.Height);
-
-        capi.Render.PopScissor();
+        RenderWaypointTitle(capi, dt, x, y, cellHeight, distX);
 
         capi.Render.Render2DTexturePremultipliedAlpha(
             _iconTexture.TextureId,
             (float)(x + 10), (float)y,
             24, 24);
+    }
+
+    private void RenderWaypointTitle(ICoreClientAPI capi, float dt,
+        double x, double y, double cellHeight, double distX)
+    {
+        var scale = RuntimeEnv.GUIScale;
+
+        var unscaledX = (x + 42) / scale;
+        var unscaledY = y / scale;
+        var unscaledW = (distX - (x + 42) - 8) / scale;
+        var unscaledH = cellHeight / scale;
+
+        var parent = capi.Gui.WindowBounds;
+
+        var scissor = ElementBounds.Fixed(unscaledX, unscaledY, unscaledW, unscaledH);
+        scissor.ParentBounds = parent;
+        scissor.CalcWorldBounds();
+
+        capi.Render.PushScissor(scissor, true);
+        capi.Render.Render2DTexturePremultipliedAlpha(
+            _texture.TextureId,
+            (float)(x + 42), (float)(y + 2),
+            _texture.Width, _texture.Height);
+        capi.Render.PopScissor();
     }
 
     public void Dispose()
