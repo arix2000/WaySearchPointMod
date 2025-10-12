@@ -2,15 +2,21 @@
   "profiles": {
     "Client": {
       "commandName": "Executable",
-      "executablePath": "dotnet",
-      "commandLineArgs": "\"$(VINTAGE_STORY)/Vintagestory.dll\" --tracelog --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
-      "workingDirectory": "$(VINTAGE_STORY)"
+      "executablePath": "/home/arek/.dotnet/dotnet",
+      "commandLineArgs": "\"$(VINTAGE_STORY)/Vintagestory.dll\" --dataPath /home/arek/.config/vintagestory_modding_data/ --tracelog --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
+      "workingDirectory": "$(VINTAGE_STORY)",
+      "environmentVariables": {
+        "VINTAGE_STORY": "/home/arek/.local/share/vintagestory_modding"
+      }
     },
     "Server": {
       "commandName": "Executable",
-      "executablePath": "dotnet",
-      "commandLineArgs": "\"$(VINTAGE_STORY)/VintagestoryServer.dll\" --tracelog --addModPath \"$(ProjectDir)/bin/$(Configuration)/Mods\"",
-      "workingDirectory": "$(VINTAGE_STORY)"
+      "executablePath": "/home/arek/.dotnet/dotnet",
+      "commandLineArgs": "\"$(VINTAGE_STORY)/VintagestoryServer.dll\" --dataPath /home/arek/.config/vintagestory_modding_data/ --tracelog --addModPath \"\"$(ProjectDir)/bin/$(Configuration)/Mods\"",
+      "workingDirectory": "$(VINTAGE_STORY)",
+      "environmentVariables": {
+        "VINTAGE_STORY": "/home/arek/.local/share/vintagestory_modding"
+      }
     }
   }
 }

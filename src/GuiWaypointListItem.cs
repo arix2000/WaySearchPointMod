@@ -15,7 +15,6 @@ public class GuiWaypointListItem : IFlatListItem
     private LoadedTexture _iconTexture;
     private readonly Vec3d _playerPos;
     public Waypoint Waypoint { get; }
-    private ElementBounds _scissorBounds;
 
     private readonly List<string> _iconCodesToRename =
         new() { "circle", "turnip", "grain", "apple", "berries", "mushroom" };
@@ -36,8 +35,6 @@ public class GuiWaypointListItem : IFlatListItem
         var distanceText = GetDistanceText();
         _distanceTexture = new TextTextureUtil(capi).GenTextTexture(distanceText, CairoFont.WhiteDetailText());
         LoadIconTexture(capi);
-        _scissorBounds = ElementBounds.FixedSize(280.0, 20.0);
-        _scissorBounds.ParentBounds = capi.Gui.WindowBounds;
     }
 
     private string GetDistanceText()
@@ -92,34 +89,17 @@ public class GuiWaypointListItem : IFlatListItem
     {
         if (_texture == null || _iconTexture == null) Recompose(capi);
 
-        double distX = x + cellWidth - _distanceTexture.Width - 8; // 8-px padding
+        double distX = x + cellWidth - _distanceTexture.Width - 8;
         capi.Render.Render2DTexturePremultipliedAlpha(
             _distanceTexture.TextureId,
             (float)distX, (float)(y + 2),
             _distanceTexture.Width, _distanceTexture.Height);
+        
 
-        double scissorX = x + 42;
-        double scissorW = distX - scissorX - 8;
-        var scissor = ElementBounds.Fixed(
-            scissorX,
-            y,
-            scissorW,
-            cellHeight
-        );
-        scissor.ParentBounds = capi.Gui.WindowBounds;
-        scissor.CalcWorldBounds();
-
-        capi.Render.PushScissor(scissor, true);
-
-        if (_texture == null)
-            _texture = new TextTextureUtil(capi).GenTextTexture(Waypoint.Title ?? Waypoint.Text,
-                CairoFont.WhiteSmallText());
         capi.Render.Render2DTexturePremultipliedAlpha(
             _texture.TextureId,
             (float)(x + 42), (float)(y + 2),
             _texture.Width, _texture.Height);
-
-        capi.Render.PopScissor();
 
         capi.Render.Render2DTexturePremultipliedAlpha(
             _iconTexture.TextureId,
@@ -129,6 +109,9 @@ public class GuiWaypointListItem : IFlatListItem
 
     public void Dispose()
     {
+        _texture?.Dispose();
+        _iconTexture?.Dispose();
+        _distanceTexture?.Dispose();
     }
 
     public bool Visible { get; set; } = true;
