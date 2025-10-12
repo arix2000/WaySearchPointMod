@@ -130,9 +130,6 @@ public class GuiWaypointListItem : IFlatListItem
 
     public void Dispose()
     {
-        _texture?.Dispose();
-        _iconTexture?.Dispose();
-        _distanceTexture?.Dispose();
     }
 
     public bool Visible { get; set; } = true;
