@@ -31,6 +31,10 @@ internal class WaySearchPointLayer : MapLayer
 
     private void OnEvery100millis(float obj)
     {
+        // Guard against uninitialized map dialog (multiplayer race condition)
+        if (_mapSink?.worldMapDlg == null) 
+            return;
+        
         var isOpened = _mapSink.worldMapDlg.DialogType == EnumDialogType.Dialog;
         if (isOpened != _wasOpened)
         {
