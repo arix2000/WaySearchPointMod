@@ -31,11 +31,14 @@ internal class WaySearchPointLayer : MapLayer
 
     private void OnEvery100millis(float obj)
     {
-        var isOpened = _mapSink.worldMapDlg.DialogType == EnumDialogType.Dialog;
+        var isOpened = _mapSink?.worldMapDlg?.DialogType == EnumDialogType.Dialog;
         if (isOpened != _wasOpened)
         {
             _wasOpened = isOpened;
-            _dialog.OnMapToggled();
+            if (_dialog != null)
+            {
+                _dialog.OnMapToggled();
+            }
         }
     }
 
