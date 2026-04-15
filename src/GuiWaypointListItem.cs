@@ -115,6 +115,7 @@ public class GuiWaypointListItem : IFlatListItem
         var unscaledH = cellHeight / scale;
 
         var parent = capi.Gui.WindowBounds;
+        if (parent == null) return;
 
         var scissor = ElementBounds.Fixed(unscaledX, unscaledY, unscaledW, unscaledH);
         scissor.ParentBounds = parent;
@@ -130,6 +131,12 @@ public class GuiWaypointListItem : IFlatListItem
 
     public void Dispose()
     {
+        _texture?.Dispose();
+        _distanceTexture?.Dispose();
+        _iconTexture?.Dispose();
+        _texture = null;
+        _distanceTexture = null;
+        _iconTexture = null;
     }
 
     public bool Visible { get; set; } = true;

@@ -40,11 +40,24 @@ public class GuiMapSearchDialog : GuiDialog
     {
         const int dialogHeight = 500;
         const int dialogWidth = 300;
-        
-        _outerBounds = ElementStdBounds.AutosizedMainDialog.WithFixedPosition(
-                x: (compo.Bounds.renderX + compo.Bounds.OuterWidth) / RuntimeEnv.GUIScale + 10.0,
-                y: (compo.Bounds.renderY  + compo.Bounds.OuterHeight - (580 * RuntimeEnv.GUIScale)) / RuntimeEnv.GUIScale)
+
+        double posX = 10.0;
+        double posY = 0.0;
+        try
+        {
+            if (compo?.Bounds != null)
+            {
+                compo.Bounds.CalcWorldBounds();
+                posX = (compo.Bounds.renderX + compo.Bounds.OuterWidth) / RuntimeEnv.GUIScale + 10.0;
+                posY = (compo.Bounds.renderY + compo.Bounds.OuterHeight - 580 * RuntimeEnv.GUIScale) / RuntimeEnv.GUIScale;
+            }
+        }
+        catch {}
+
+        _outerBounds = ElementStdBounds.AutosizedMainDialog
+            .WithFixedPosition(posX, posY)
             .WithAlignment(EnumDialogArea.None);
+
         var backgroundBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding);
         var dialogContainerBounds = ElementBounds.Fixed(0, 40, dialogWidth, dialogHeight);
         backgroundBounds.BothSizing = ElementSizing.FitToChildren;
@@ -76,7 +89,7 @@ public class GuiMapSearchDialog : GuiDialog
             .AddVerticalScrollbar(OnNewScrollbarValue, scrollbarBounds, "scrollbar")
             .EndChildElements()
             .Compose();
-        
+
         UpdateScrollbar();
         SingleComposer.GetTextInput("searchinput").SetPlaceHolderText(Lang.Get("Search..."));
         SingleComposer.UnfocusOwnElements();
@@ -119,12 +132,14 @@ public class GuiMapSearchDialog : GuiDialog
 
     private void UpdateScrollbar()
     {
+        if (SingleComposer == null) return;
         var list = SingleComposer.GetFlatList("flatlist");
+        if (list == null) return;
         list.CalcTotalHeight();
 
         if (!_isScrollEnabled) return;
         var scrollbar = SingleComposer.GetScrollbar("scrollbar");
-        scrollbar.SetHeights((float)ListHeight, (float)list.insideBounds.fixedHeight);
+        scrollbar?.SetHeights((float)ListHeight, (float)list.insideBounds.fixedHeight);
     }
 
     private void ResetUpdateScrollbarToTop(bool shouldResetScroll)
@@ -165,6 +180,8 @@ public class GuiMapSearchDialog : GuiDialog
 
     public void SetWaypoints(List<Waypoint> waypoints)
     {
+        if (SingleComposer == null) return;
+
         _waypoints.Clear();
         _filteredWaypoints.Clear();
         _waypoints = new List<Waypoint>(waypoints);
@@ -190,6 +207,7 @@ public class GuiMapSearchDialog : GuiDialog
 
     private void OnGlobalMouseMove(MouseEvent args)
     {
+        if (SingleComposer == null) return;
         _outerBounds?.CalcWorldBounds();
         var isNowInside = _outerBounds?.PointInside(args.X, args.Y) ?? false;
         if (isNowInside == _mouseWasInside) return;
@@ -205,6 +223,7 @@ public class GuiMapSearchDialog : GuiDialog
         {
             _isScrollEnabled = false;
             var scrollbar = SingleComposer.GetScrollbar("scrollbar");
+            if (scrollbar == null) return;
             _scrollbarYPosition = scrollbar.CurrentYPosition;
             scrollbar.SetHeights((float)ListHeight, (float)ListHeight);
         }

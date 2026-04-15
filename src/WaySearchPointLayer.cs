@@ -70,6 +70,7 @@ internal class WaySearchPointLayer : MapLayer
 
     public override void ComposeDialogExtras(GuiDialogWorldMap guiDialogWorldMap, GuiComposer compo)
     {
+        if (_dialog == null) return;
         _dialog.Compose("worldmap-layer-" + LayerGroupCode, guiDialogWorldMap, compo);
     }
 }
