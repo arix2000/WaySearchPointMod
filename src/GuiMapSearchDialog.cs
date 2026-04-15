@@ -195,6 +195,17 @@ public class GuiMapSearchDialog : GuiDialog
             UpdateScrollbar();
         }
     }
+    
+    public void RefreshDistances()
+    {
+        if (SingleComposer == null) return;
+        var playerPos = capi.World.Player.Entity.Pos.XYZ;
+        foreach (var item in _filteredWaypoints)
+        {
+            if (item is GuiWaypointListItem listItem)
+                listItem.UpdatePlayerPos(playerPos);
+        }
+    }
 
     private void SortSetWaypoints()
     {

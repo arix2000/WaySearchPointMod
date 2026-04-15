@@ -24,6 +24,7 @@ internal class WaySearchPointLayer : MapLayer
             _dialog = new GuiMapSearchDialog(api, _mapSink);
             api.Event.RegisterGameTickListener(OnEveryTwoSeconds, 2000);
             api.Event.RegisterGameTickListener(OnEvery100millis, 100);
+            api.Event.RegisterGameTickListener(_ => _dialog.RefreshDistances(), 300);
         }
 
         GetWaypointLayer();
@@ -47,10 +48,7 @@ internal class WaySearchPointLayer : MapLayer
         base.OnTick(dt);
         var sharedWaypoints = CompatibilityUtils.GetSharedWaypointsIfExists(_mapSink, api);
         var allWaypoints = _waypointLayer.ownWaypoints.Concat(sharedWaypoints).ToList();
-        if (allWaypoints.Count != _dialog.WaypointsCount)
-        {
-            _dialog.SetWaypoints(allWaypoints);
-        }
+        _dialog.SetWaypoints(allWaypoints);
     }
 
     private void GetWaypointLayer()

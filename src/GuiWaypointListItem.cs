@@ -14,7 +14,7 @@ public class GuiWaypointListItem : IFlatListItem
     private LoadedTexture _texture;
     private LoadedTexture _distanceTexture;
     private LoadedTexture _iconTexture;
-    private readonly Vec3d _playerPos;
+    private Vec3d _playerPos;
     public Waypoint Waypoint { get; }
 
     private readonly List<string> _iconCodesToRename =
@@ -24,6 +24,13 @@ public class GuiWaypointListItem : IFlatListItem
     {
         Waypoint = waypoint;
         _playerPos = playerPos;
+    }
+    
+    public void UpdatePlayerPos(Vec3d newPos)
+    {
+        _playerPos = newPos;
+        _distanceTexture?.Dispose();
+        _distanceTexture = null;
     }
 
     private void Recompose(ICoreClientAPI capi)
@@ -88,7 +95,7 @@ public class GuiWaypointListItem : IFlatListItem
         double x, double y,
         double cellWidth, double cellHeight)
     {
-        if (_texture == null || _iconTexture == null) Recompose(capi);
+        if (_texture == null || _iconTexture == null || _distanceTexture == null) Recompose(capi);
 
         var distX = x + cellWidth - _distanceTexture.Width - 8;
         capi.Render.Render2DTexturePremultipliedAlpha(
